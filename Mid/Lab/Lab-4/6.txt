@@ -1,0 +1,63 @@
+
+ 
+
+.MODEL small
+.STACK 100h
+.DATA
+    msg1 db "Enter a character: $"
+    msg2 db "Thank you.$" 
+    val db 50
+
+.CODE
+    MAIN PROC
+        mov ax, @DATA
+        mov ds, ax
+
+        ; Display "Enter a character: "
+        mov ah, 09h
+        lea dx, msg1
+        int 21h
+        
+        ; Read a character from user
+        mov ah, 01h
+        int 21h
+        mov bl, al  ; Store input in BL  
+
+        ;new line
+        MOV AH,02h
+        MOV DX,0Dh
+        INT 21h
+        MOV DX,0Ah
+        INT 21h
+        
+    printLoop:
+        ; Print character in BL
+        mov ah, 02h
+        mov dl, bl
+        int 21h
+
+        ; Decrement counter and loop
+        dec val
+        jnz printLoop
+
+        ; Print "Thank you."
+        mov ah, 09h
+        lea dx, msg2
+        int 21h 
+        jmp END
+
+    END:
+        mov ah, 4Ch
+        int 21h
+
+    MAIN ENDP
+END MAIN
+
+ret
+
+
+
+
+
+
+

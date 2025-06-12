@@ -1,0 +1,23 @@
+.MODEL small
+.STACK 100h
+.DATA
+.CODE
+
+MAIN PROC
+    
+
+    mov cx, 26         ; Number of capital letters
+    mov dl, 'A'        ; Start with ASCII of A
+
+print_loop:
+    mov ah, 02h
+    int 21h
+    inc dl   
+    loop print_loop
+
+    ; Exit
+    mov ah, 4Ch
+    int 21h
+
+MAIN ENDP
+END MAIN

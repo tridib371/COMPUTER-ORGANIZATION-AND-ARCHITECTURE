@@ -1,0 +1,42 @@
+.MODEL SMALL
+.STACK 100H
+.CODE
+.DATA
+;COUNTER REGISTER PUSH AND POP
+MAIN PROC
+    
+    MOV AX,@DATA
+    MOV DS,AX 
+    
+    XOR CX,CX
+    
+    MOV AH,1
+    INT 21H
+    
+    WHILE_:
+    CMP AL,0DH
+    JE END_WHILE
+    
+    PUSH AX
+    INC CX    
+    INT 21H
+    JMP WHILE_  
+    
+    END_WHILE:
+    MOV AH,2
+    MOV DL,0DH 
+    INT 21H
+    MOV DL,0AH 
+    INT 21H     ;NEWLINE
+    
+    REVERSE_OUTPUT:
+    POP DX
+    INT 21H
+    LOOP REVERSE_OUTPUT
+    
+    EXIT:
+    MOV AH,4CH
+    INT 21H
+    
+MAIN ENDP
+END MAIN

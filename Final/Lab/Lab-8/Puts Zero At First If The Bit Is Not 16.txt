@@ -1,0 +1,59 @@
+.MODEL SMALL
+.STACK 100H
+.DATA  
+I DB 'ENTER INPUT:$' 
+O DB 10,13, 'OUTPUT:$'
+.CODE
+
+MAIN PROC
+    MOV AX,@DATA
+    MOV DS,AX
+
+    
+    MOV AH,9
+    LEA DX, I
+    INT 21H
+    
+    XOR BX,BX
+    MOV CX,16
+    
+    FOR:
+    MOV AH,1
+    INT 21H
+    
+    CMP AL,0DH
+    JE ENDFOR
+    
+    AND AL,0FH
+    SHL BX,1
+    OR BL,AL
+    LOOP FOR
+               
+    ENDFOR:
+    MOV AH,9
+    LEA DX,O
+    INT 21H  
+    
+    MOV CX,16  
+    PRINT:
+    ROL BX,1
+    JC ONE 
+    
+    MOV AH,2
+    MOV DL,'0'
+    INT 21H
+    JMP LOOOP
+
+    ONE:    
+    MOV AH,2
+    MOV DL,'1'
+    INT 21H
+
+    LOOOP:
+    LOOP PRINT
+
+    MOV AH,4CH
+    INT 21H
+    
+    MAIN ENDP
+    END MAIN

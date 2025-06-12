@@ -1,0 +1,79 @@
+.DATA
+
+INPUT DB " ENTER BINARY INPUT: $"
+OUTPUT DB 0AH, 0DH, " BINARY OUTPUT: $"
+ 
+.CODE
+INPUT1 PROC
+
+    MOV AX, @DATA
+    MOV DS, AX
+    MOV AH,9
+    LEA DX,INPUT
+    INT 21H
+    RET
+
+ENDP
+ 
+MAIN PROC
+
+    MOV AX, @DATA
+    MOV DS, AX
+
+    CALL INPUT1
+    XOR BX,BX
+    MOV CX,16
+
+
+WHILE_START:
+
+    MOV AH,1
+    INT 21H
+    CMP AL,0DH
+    JE DISPLAY_OUTPUT
+    AND AL,0FH
+    SHL BX,1
+    OR BL,AL
+    LOOP WHILE_START
+
+
+DISPLAY_OUTPUT:
+
+    MOV AH,9
+    LEA DX,OUTPUT
+    INT 21H
+    MOV CX,16
+
+IF:
+
+    SHL BX,1
+    JNC THEN
+    MOV AH,2
+    MOV DL,31H
+    INT 21H
+    JMP DISPLAY
+
+
+THEN:
+
+    MOV AH,2
+    MOV DL,30H
+    INT 21H
+    JMP DISPLAY
+ 
+    
+
+DISPLAY:
+
+    LOOP IF
+    JMP END
+
+
+END:
+
+    MOV AH,4CH
+    INT 21H
+
+MAIN ENDP
+END MAIN
+ 

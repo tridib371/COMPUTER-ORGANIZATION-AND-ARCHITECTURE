@@ -1,0 +1,75 @@
+
+ 
+
+.MODEL small
+.STACK 100h
+.DATA
+    msg1 db "Enter a number: $"
+    msg2 db  "Less than 5 $"
+    msg3 db "Greater than 5 $"
+    msg4 db  "Equal to 5 $"  
+    val db 5
+
+.CODE
+    MAIN PROC
+        mov ax, @DATA
+        mov ds, ax
+
+
+        ; Display "Enter a number: "
+        mov ah, 09h
+        lea dx, msg1
+        int 21h
+        
+        ; Read a number from user
+        mov ah, 01h
+        int 21h
+        mov bl, al  ; Store input in BL
+        sub bl, 30h  
+                       
+          
+          ;new line
+          MOV AH,02h
+          MOV DX,0Dh
+          INT 21h
+          MOV DX,0Ah
+          INT 21h             
+                       
+        ; Compare user input with CL
+        cmp bl,5
+        jl lessThan
+        jg greaterThan
+        je equalTo
+
+    lessThan:
+        mov ah, 09h
+        lea dx, msg2
+        int 21h
+        jmp END
+
+    greaterThan:
+        mov ah, 09h
+        lea dx, msg3
+        int 21h
+        jmp END
+
+    equalTo:
+        mov ah, 09h
+        lea dx, msg4
+        int 21h
+        jmp END  
+        
+
+       END:
+        mov ah, 4Ch
+        int 21h
+                
+    MAIN ENDP
+END MAIN
+
+
+ret
+
+
+
+

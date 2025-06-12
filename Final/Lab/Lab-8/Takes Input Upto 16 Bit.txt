@@ -1,0 +1,33 @@
+.MODEL SMALL
+.STACK 100H
+.DATA
+.CODE
+
+MAIN PROC
+    MOV AX,@DATA
+    MOV DS,AX
+    
+    XOR BX,BX
+    MOV CX,16
+    
+    FOR:
+    MOV AH,1
+    INT 21H
+    
+    CMP AL,0DH
+    JE ENDFOR
+    
+    AND AL,0FH
+    SHL BX,1
+    OR BL,AL
+    LOOP FOR
+               
+    
+    ENDFOR:
+    
+    MOV AH,4CH
+    INT 21H
+    
+    MAIN ENDP
+    END MAIN
+    

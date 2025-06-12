@@ -1,0 +1,58 @@
+.MODEL small
+.STACK 100h
+.DATA
+    msg1 db "Enter a number (1-4): $"
+    msg2 db  "Output: o$"
+    msg3 db  "Output: e$"
+.CODE
+    MAIN PROC
+        mov ax, @DATA
+        mov ds, ax
+
+        ; Display message to ask for input
+        mov ah, 09h
+        lea dx, msg1
+        int 21h
+
+        ; Take input from user
+        mov ah, 01h
+        int 21h
+        mov bl, al    ; AL already has the input
+        sub bl, 30h   ; Convert ASCII to number 
+        
+        
+        ;new line
+          MOV AH,02h
+          MOV DX,0Dh
+          INT 21h
+          MOV DX,0Ah
+          INT 21h   
+
+        ; Compare AL to decide output
+        cmp bl, 1
+        je printO
+        cmp bl, 3
+        je printO
+        cmp bl, 2
+        je printE
+        cmp bl, 4
+        je printE
+        
+
+    printO:
+        mov ah, 09h
+        lea dx, msg2
+        int 21h
+        jmp end
+
+    printE:
+        mov ah, 09h
+        lea dx, msg3
+        int 21h
+        jmp end
+
+    end:
+        mov ah, 4Ch
+        int 21h
+    MAIN ENDP
+END MAIN

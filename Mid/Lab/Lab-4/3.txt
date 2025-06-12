@@ -1,0 +1,53 @@
+.MODEL small
+.STACK 100h
+.DATA
+    msg1 db "Enter a number: $"
+    msg2 db  "Positive $"
+    msg3 db  "Negative $"
+.CODE
+    MAIN PROC
+        mov ax, @DATA
+        mov ds, ax
+
+        ; Display "Enter a number: "
+        mov ah, 09h
+        lea dx, msg1
+        int 21h
+        
+        ; Read a number from user
+        mov ah, 01h
+        int 21h
+        mov bl, al  ; Store the number in BL
+        sub bl, 30h  
+          
+          ;New line       
+         MOV AH,02h
+         MOV DX,0Dh
+         INT 21h
+         MOV DX,0Ah
+         INT 21h        
+                 
+        ; Check if the number is positive or negative
+        cmp bl, 0
+        jl negative
+        jg positive
+        je end  ; If the input is 0, exit
+
+    positive:
+        mov ah, 09h
+        lea dx, msg2
+        int 21h
+        jmp end
+
+    negative:
+        mov ah, 09h
+        lea dx, msg3
+        int 21h
+        jmp end
+
+    end:
+        mov ah, 4Ch
+        int 21h
+                
+    MAIN ENDP
+END MAIN

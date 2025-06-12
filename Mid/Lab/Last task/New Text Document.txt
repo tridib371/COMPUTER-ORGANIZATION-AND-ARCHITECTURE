@@ -1,0 +1,110 @@
+Sample Output:
+First Number:4
+Second Number:8
+Third Number:2
+Smallest Number:2
+
+
+
+
+
+
+.MODEL SMALL
+.STACK 100h
+
+.DATA
+    msg1 db "Enter First Number:$"
+    msg2 db "Enter Second Number:$"
+    msg3 db "Enter Third Number:$"
+    msg_small db "Smallest Number: $"
+
+.CODE
+MAIN PROC
+    mov ax, @data
+    mov ds, ax
+
+    ;First Number
+    mov ah, 09h
+    lea dx, msg1
+    int 21h
+
+    mov ah, 01h
+    int 21h
+    sub al, 30h
+    mov bl, al      ; Store first number in BL  
+    
+    
+    mov ah,02h
+    mov dx,0dh
+    int 21h
+    mov dx,0ah
+    int 21h
+
+    ;Second Number
+    mov ah, 09h
+    lea dx, msg2
+    int 21h
+
+    mov ah, 01h
+    int 21h
+    sub al, 30h
+    cmp al, bl
+    jl  store_second
+    jmp check_third 
+    
+   
+
+store_second:
+    mov bl, al  
+    
+    
+
+check_third:   
+
+mov ah,02h
+    mov dx,0dh
+    int 21h
+    mov dx,0ah
+    int 21h
+
+    ;Third Number
+    mov ah, 09h
+    lea dx, msg3
+    int 21h
+
+    mov ah, 01h
+    int 21h
+    sub al, 30h
+    cmp al, bl
+    jl  store_third
+    jmp display
+
+store_third:
+    mov bl, al   
+    
+    mov ah,02h
+    mov dx,0dh
+    int 21h
+    mov dx,0ah
+    int 21h
+
+display:
+    ; Display result message
+    mov ah, 09h
+    lea dx, msg_small
+    int 21h
+
+    ; Convert smallest number to ASCII and print
+    mov ah, 02h
+    add bl, 30h
+    mov dl, bl
+    int 21h
+
+    ; Exit
+    mov ah, 4Ch
+    int 21h
+
+MAIN ENDP
+END MAIN
+
+

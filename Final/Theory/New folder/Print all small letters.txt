@@ -1,0 +1,21 @@
+.MODEL small
+.STACK 100h
+.DATA
+.CODE
+
+MAIN PROC
+    mov cx, 26         ; Number of lowercase letters
+    mov dl, 'a'        ; Start with ASCII of 'a'
+
+print_loop:
+    mov ah, 02h
+    int 21h
+    inc dl   
+    loop print_loop
+
+    ; Exit
+    mov ah, 4Ch
+    int 21h
+
+MAIN ENDP
+END MAIN

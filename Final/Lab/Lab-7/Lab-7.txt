@@ -1,0 +1,113 @@
+Sample Output:
+
+Type a Character: G(underline)
+The ASCII code of G(underline) in hex is:67
+
+Repeat this process until the user types a carriage (like pressing Enter button) letter
+
+
+
+
+
+.MODEL small
+.STACK 100h
+.DATA
+    msg1 db "Type a Character: $"
+    msg2 db "The ASCII code of $"
+    msg3 db " in hex is: $"
+
+.CODE
+
+MAIN PROC
+    mov ax, @DATA
+    mov ds, ax
+
+start:
+    ; Display prompt
+    mov ah, 09h
+    lea dx, msg1
+    int 21h
+
+    ; Read a character
+    mov ah, 01h
+    int 21h
+    mov bl, al    ; store character in BL
+
+    ; Check for Enter key
+    cmp al, 0Dh
+    je end_program
+
+    ; Newline
+    mov ah, 02h
+    mov dl, 0Dh
+    int 21h
+    mov dl, 0Ah
+    int 21h
+
+    ; Print: The ASCII code of
+    mov ah, 09h
+    lea dx, msg2
+    int 21h
+
+    ; Print the character itself
+    mov ah, 02h
+    mov dl, bl
+    int 21h
+
+    ; Print: in hex is:
+    mov ah, 09h
+    lea dx, msg3
+    int 21h
+
+    ; ==========================
+    ; Correct Hex Output Logic
+    ; ==========================
+
+    ; HIGH nibble
+    mov cl, bl
+    shr cl, 4       ; move high nibble to low
+    and cl, 0Fh     ; mask upper bits
+    cmp cl, 9
+    jbe hex_high_digit
+    add cl, 37h     ; A-F
+    jmp show_hex_high
+
+hex_high_digit:
+    add cl, 30h     ; 0-9
+
+show_hex_high:
+    mov dl, cl
+    mov ah, 02h
+    int 21h
+
+    ; LOW nibble
+    mov cl, bl
+    and cl, 0Fh
+    cmp cl, 9
+    jbe hex_low_digit
+    add cl, 37h
+    jmp show_hex_low
+
+hex_low_digit:
+    add cl, 30h
+
+show_hex_low:
+    mov dl, cl
+    mov ah, 02h
+    int 21h
+
+    ; Newline
+    mov ah, 02h
+    mov dl, 0Dh
+    int 21h
+    mov dl, 0Ah
+    int 21h
+
+    jmp start
+
+end_program:
+    mov ah, 4Ch
+    int 21h
+
+MAIN ENDP
+END MAIN

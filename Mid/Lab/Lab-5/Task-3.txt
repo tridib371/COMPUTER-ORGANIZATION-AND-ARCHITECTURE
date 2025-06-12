@@ -1,0 +1,30 @@
+.MODEL small
+.STACK 100h
+.DATA
+    box DB "**********", 0Dh, 0Ah
+        DB "**********", 0Dh, 0Ah
+        DB "**********", 0Dh, 0Ah
+        DB "**********", 0Dh, 0Ah
+        DB "**********", 0Dh, 0Ah
+        DB "**********", 0Dh, 0Ah
+        DB "**********", 0Dh, 0Ah
+        DB "**********", 0Dh, 0Ah
+        DB "**********", 0Dh, 0Ah
+        DB "**********", 0Dh, 0Ah, "$"
+    
+.CODE
+MAIN PROC
+    MOV AX, @DATA
+    MOV DS, AX
+    
+    ; Display the box 
+    MOV AH, 09h
+    MOV DX, OFFSET box
+    INT 21h
+
+    END:
+    MOV AH, 4Ch
+    INT 21h
+
+MAIN ENDP
+END MAIN

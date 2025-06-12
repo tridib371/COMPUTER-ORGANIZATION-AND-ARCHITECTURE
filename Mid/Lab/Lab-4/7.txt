@@ -1,0 +1,69 @@
+.MODEL small
+.STACK 100h
+.DATA
+    msg1 db "Enter two characters: $"
+    
+
+.CODE
+    MAIN PROC
+        mov ax, @DATA
+        mov ds, ax
+
+        ; Display "Enter two characters: "
+        mov ah, 09h
+        lea dx, msg1
+        int 21h
+
+        ; Read first character
+        mov ah, 01h
+        int 21h
+        mov bl, al  ; Store first character in BL
+
+        ; Read second character
+        mov ah, 01h
+        int 21h
+        mov bh, al  ; Store second character in BH
+
+                   
+         ;new line          
+       mov ah,02h
+        mov dx,0Dh
+        int 21h
+        mov dx,0Ah
+        int 21h
+
+
+        ; Print first character
+        mov ah, 02h
+        mov dl, bl
+        int 21h
+
+        ; Print second character
+        mov ah, 02h
+        mov dl, bh
+        int 21h
+        
+        
+        ;new line
+        mov ah,02h
+        mov dx,0Dh
+        int 21h
+        mov dx,0Ah
+        int 21h
+
+        ; Print first character again
+        mov ah, 02h
+        mov dl, bl
+        int 21h
+
+        ; Print second character again
+        mov ah, 02h
+        mov dl, bh
+        int 21h
+
+       END:
+        mov ah, 4Ch
+        int 21h
+                
+    MAIN ENDP
+END MAIN

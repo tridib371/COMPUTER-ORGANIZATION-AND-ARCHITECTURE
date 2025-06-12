@@ -1,0 +1,59 @@
+.MODEL small
+.STACK 100h
+.DATA  
+
+    msg1 db "Enter a character: $"
+    msg2 db "Thank you.$" 
+    
+.CODE   
+
+    MAIN PROC
+        mov ax, @DATA
+        mov ds, ax
+
+        ; Display prompt message
+        mov ah, 09h
+        lea dx, msg1
+        int 21h
+
+        ; Read a character
+        mov ah, 01h
+        int 21h
+        mov bl, al    ; store input character into BL
+        
+        ;New Line
+        mov ah,02h
+        mov dx,0Ah
+        int 21h
+        mov dx,0Dh
+        int 21h
+
+       
+        ; Set CX = 50 for loop
+        mov cx, 50
+
+    print_loop: 
+        mov ah, 02h
+        mov dl, bl    ; load character into DL
+        int 21h
+        loop print_loop 
+        
+        ;New Line
+        mov ah,02h
+        mov dx,0Ah
+        int 21h
+        mov dx,0Dh
+        int 21h
+
+        ; Print Thank you
+        mov ah, 09h
+        lea dx, msg2
+        int 21h
+
+        ; Exit program
+        End:
+        mov ah, 4Ch
+        int 21h
+
+    MAIN ENDP
+END MAIN

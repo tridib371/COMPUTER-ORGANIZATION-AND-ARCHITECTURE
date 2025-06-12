@@ -1,0 +1,64 @@
+.MODEL small
+.STACK 100h
+.DATA
+    msg1 db "Enter a character: $"
+    msg2 db "It is a vowel.$"
+    msg3 db "It is not a vowel.$"
+.CODE
+
+MAIN PROC
+    mov ax, @DATA
+    mov ds, ax
+
+    ; Prompt message
+    mov ah, 09h
+    lea dx, msg1
+    int 21h
+
+    ; Read character
+    mov ah, 01h
+    int 21h
+    mov bl, al   ; Store input character
+
+    ; Check for vowels: A, E, I, O, U (uppercase only)
+    cmp bl, 'A'
+    je vowel
+    cmp bl, 'E'
+    je vowel
+    cmp bl, 'I'
+    je vowel
+    cmp bl, 'O'
+    je vowel
+    cmp bl, 'U'
+    je vowel
+
+    ; Not a vowel
+    mov ah, 02h
+    mov dl, 0Dh
+    int 21h
+    mov dl, 0Ah
+    int 21h
+
+    mov ah, 09h
+    lea dx, msg3
+    int 21h
+    jmp end_program
+
+vowel:
+    ; Print new line
+    mov ah, 02h
+    mov dl, 0Dh
+    int 21h
+    mov dl, 0Ah
+    int 21h
+
+    mov ah, 09h
+    lea dx, msg2
+    int 21h
+
+end_program:
+    mov ah, 4Ch
+    int 21h
+
+MAIN ENDP
+END MAIN

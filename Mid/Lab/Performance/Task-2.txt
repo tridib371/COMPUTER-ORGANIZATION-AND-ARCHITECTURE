@@ -1,0 +1,74 @@
+
+
+.MODEL small
+.STACK 100h
+.DATA
+    msg1 db "Enter Three Initials: $"
+    
+.CODE
+    MAIN PROC
+        mov ax, @DATA
+        mov ds, ax
+
+        ; Display prompt
+        mov ah, 09h
+        lea dx, msg1
+        int 21h
+
+        ; Read first character
+        mov ah, 01h
+        int 21h
+        mov bl, al  ; store in BL
+
+        ; Read second character
+        mov ah, 01h
+        int 21h
+        mov bh, al  ; store in BH
+
+        ; Read third character
+        mov ah, 01h
+        int 21h
+        mov cl, al  ; store in CL
+
+         ;new line
+          MOV AH,02h
+          MOV DX,0Dh
+          INT 21h
+          MOV DX,0Ah
+          INT 21h 
+
+        ; Print first character (BL)  
+         mov ah, 02h
+        mov dl, bl
+        int 21h
+
+       ;new line
+          MOV AH,02h
+          MOV DX,0Dh
+          INT 21h
+          MOV DX,0Ah
+          INT 21h
+
+        ; Print second character (BH) 
+        mov ah, 02h
+        mov dl, bh
+        int 21h
+
+       ;new line
+          MOV AH,02h
+          MOV DX,0Dh
+          INT 21h
+          MOV DX,0Ah
+          INT 21h
+
+        ; Print third character (CL) 
+        mov ah, 02h
+        mov dl, cl
+        int 21h
+
+       END:
+        mov ah, 4Ch
+        int 21h
+
+    MAIN ENDP
+END MAIN
